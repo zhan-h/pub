@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中药数据展示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .container {
+            width: 48%;
+            height: 98%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .post-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .post-button:hover {
+            background-color: #005f73;
+        }
+
+        .table-container {
+            height: calc(100vh - 60px); /* 高度减去按钮和内边距的高度 */
+            overflow-y: auto; /* 添加垂直滚动条 */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form method="post" action="">
+        <button type="submit" class="post-button">更新数据</button>
+    </form>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>中药名称</th>
+                <th>规格</th>
+                <th>价格</th>
+                <th>周涨幅</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.zy_name }}</td>
+                    <td>{{ item.zy_profession }}</td>
+                    <td>{{ item.zy_price }}%</td>
+                    <td>{{ item.zy_work }}%</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" id="container">
+
+</div>
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script>
+    const chartDom = document.getElementById('container');
+    const myChart = echarts.init(chartDom);
+    let option;
+
+    option = {
+        xAxis: {
+            scale: true
+        },
+        yAxis: {
+            scale: true
+        },
+        series: [
+            {
+                type: 'effectScatter',
+                symbolSize: 20,
+            },
+            {
+                type: 'scatter',
+                data: {{ datas }}
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+
+</script>
+</body>
+</html>
